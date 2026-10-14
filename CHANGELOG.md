@@ -13,7 +13,8 @@
 - Přeložené volby polarity mají platné názvy; uložená znaménka 1/−1 zůstávají beze změny.
 - Odesílání zůstává pouze monitorovací, každých 60 sekund; API formát se nemění.
 
-Stav ověření: viz `docs/TESTING.md`. Označení beta neznamená ověření na všech instalacích HA.
+Prošly regresní testy, skutečné frameworky HA 2026.9/2026.10 i oficiální HACS/hassfest.
+Podrobnosti jsou v `docs/VALIDATION.md`. Beta ještě nenahrazuje živý pilot dle `docs/TESTING.md`.
 
 ## 0.2.0 — 2026-10-13
 

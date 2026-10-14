@@ -1,8 +1,9 @@
-# Výsledek místní přípravy 0.3.0 (2026-10-13)
+# Ověření bety 0.3.0 (2026-10-14)
 
-Provedeno bez připojení k produkčnímu HA, portálu nebo jeho databázi:
+Provedeno lokálně a v GitHub Actions, bez připojení k produkčnímu HA, portálu
+nebo jeho databázi:
 
-- 63 místních regresních testů: všechny prošly. Obsahují převody, výpadky,
+- 65 regresních testů: všechny prošly lokálně i na GitHubu. Obsahují převody, výpadky,
   souhlas, migrace ze starých konfigurací, zachování voleb, obnovu klíče,
   zachování identity, bezpečnou diagnostiku a balení/verzování.
 - Kontrola veřejných zdrojů, syntaxe Pythonu a JSON, parity českých/anglických
@@ -13,20 +14,26 @@ Provedeno bez připojení k produkčnímu HA, portálu nebo jeho databázi:
   pravidel HA/HACS. Žádná validace HACS není vynechávaná.
 - Reprodukovatelnost archivů, kontrola jejich obsahu a odmítnutí přepsání vydání:
   pokryté místními testy. Instalační ZIP neobsahuje vývojové testy/workflow.
-- Metadata testovacích balíčků ověřena na PyPI: 0.13.363 → HA 2026.9.0,
-  0.13.372 → HA 2026.10.1; tyto běhy jsou připravené v GitHub Actions.
+- Skutečný framework HA 2026.9.0 a 2026.10.1: obě sady prošly. Každá obsahuje
+  šest testů migrace, reloadu, obnovy klíče a možností se zachovanou polaritou.
+  API odpovědi a měření jsou smyšlené a síť v testech blokovaná.
+- Oficiální Home Assistant hassfest: prošel po opravě názvů přeložených voleb
+  polarity; uložená znaménka 1/−1 se touto změnou nemění.
+- HACS včetně metadat, licence, dokumentace, témat a přibalené ikony: prošel
+  bez vypnutí kterékoliv validace.
 
-Dosud neprovedeno:
+[Úspěšná kompletní kontrola kódu](https://github.com/kullalukas-png/nase-energie-ha/actions/runs/38519424711)
+se vztahuje ke commitu `de2b26827184c487485c4b8e934b110c4c28e65d`.
+Publikační workflow všechny kontroly znovu spouští na commitu vydání a release
+vytvoří pouze při jejich úspěchu. Výsledky jsou veřejné na stránce Actions.
 
-- Nahrání veřejného repozitáře ani vytvoření release na GitHubu.
-- Testy `tests_ha` se skutečným frameworkem na Linuxu (místní dostupný Python
-  je 3.12/Windows; HA 2026.9+ vyžaduje Python 3.14.2+).
-- Oficiální Actions hassfest/HACS. Jejich výsledky závisí také na skutečně
-  zveřejněném repozitáři a dokumentaci; workflow jsou připravené, ne proběhlé.
+Co automatické testy nenahrazují:
+
 - Pilotní instalace/aktualizace přes skutečný HACS a živý přenos do portálu.
 - Zařazení do hlavního katalogu HACS. Přibalená ikona custom integrace nevyžaduje
   samostatný PR do upstream brands podle současných pravidel HA a validátoru HACS.
 
-Výsledky místních testů nejsou certifikací HACS ani zárukou každé instalace.
-Pro beta release je nutné nechat projít všechny připravené kontroly na GitHubu.
+Úspěch automatických kontrol není schválením do hlavního katalogu ani zárukou
+každé instalace. Beta je předběžné vydání a přenos na živou instalaci se musí
+ověřit samostatně, bez zásahu do řízení FVE.
 Pro stabilní release dokončete i [živý kontrolní seznam](TESTING.md).

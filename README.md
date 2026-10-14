@@ -7,8 +7,10 @@ bojleru ani klimatizace. Nepotřebuje hlavní token HA ani otevřený port domá
 ## Instalace přes HACS
 
 Určeno pro Home Assistant **2026.9 a novější**. HACS musí být v HA již nainstalovaný.
-První vydání musí správce nejprve zveřejnit podle [návodu pro správce](docs/PUBLISHING.md);
-pouhé stažení tohoto zdrojového balíčku nevytváří veřejný repozitář ani vydání.
+Stahujte vydané verze ze sekce [Releases](https://github.com/kullalukas-png/nase-energie-ha/releases).
+Beta je určena pro pilotní použití; přehled automatických kontrol je v
+[ověření verze](docs/VALIDATION.md). Postup vydávání pro správce je odděleně
+v [návodu pro správce](docs/PUBLISHING.md).
 
 1. V HACS otevřete nabídku **⋮ → Vlastní repozitáře**.
 2. Zadejte `https://github.com/kullalukas-png/nase-energie-ha`, typ **Integrace**.
@@ -121,9 +123,9 @@ zrušte nově vydaný nepoužitý klíč. Přerušení internetu nové párován
 Stejný ZIP může nainstalovat jiný uživatel do svého HA. Každý si vytvoří vlastní
 elektrárnu a párovací kód; nepředává se váš klíč ani hlavní token HA.
 
-Balíček je připraven pro `kullalukas-png/nase-energie-ha` s licencí MIT. Obsahuje
-HACS metadata, správce, dokumentaci, kontroly a ručně spouštěné vydání na GitHubu.
-Zveřejnění je samostatný krok; dokončete [kontrolní seznam](docs/PUBLISHING.md).
+Kód a vydání spravuje `kullalukas-png/nase-energie-ha` s licencí MIT. Aktualizace
+se vydávají až po automatických testech, hassfest a HACS; uživatelům je nabízí
+HACS. Pro první připojení každý použije svoji elektrárnu a svůj jednorázový kód.
 Vlastní repozitář HACS a zařazení do hlavního katalogu jsou odlišné kroky.
 
 ## Vývojové testy
