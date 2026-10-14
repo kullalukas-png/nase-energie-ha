@@ -10,6 +10,7 @@
 - Nové stringy se při migraci ani otevření možností neaktivují automaticky.
 - Možnosti ponechávají i nezměněné doplňkové volby.
 - Automatické testy zachování konfigurace, validace HACS/hassfest a kontrolované vydávání.
+- Přeložené volby polarity mají platné názvy; uložená znaménka 1/−1 zůstávají beze změny.
 - Odesílání zůstává pouze monitorovací, každých 60 sekund; API formát se nemění.
 
 Stav ověření: viz `docs/TESTING.md`. Označení beta neznamená ověření na všech instalacích HA.

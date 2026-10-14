@@ -106,3 +106,30 @@ async def test_invalid_auth_starts_reauth_and_stops_repeated_sends(hass, no_live
     assert entry.runtime_data.status == "invalid_auth"
     progress = hass.config_entries.flow.async_progress_by_handler(DOMAIN)
     assert len(progress) == 1 and progress[0]["context"]["source"] == SOURCE_REAUTH
+
+
+async def test_named_sign_choices_preserve_saved_polarity_and_pause(hass):
+    mapping = {"pv_w": ["sensor.pv"], "load_w": [], "grid_w": ["sensor.grid"],
+               "battery_w": ["sensor.battery"], "soc_pct": []}
+    entry = MockConfigEntry(domain=DOMAIN, title="Saved", unique_id="https://portal.test|42",
+                           version=1, minor_version=1,
+                           data={"portal_url": "https://portal.test", "token": "synthetic-old", "installation_id": 42,
+                                 "mapping": mapping, "signs": {"grid_w": -1, "battery_w": 1}, "enabled": False},
+                           options={"enabled": False, "future_option": {"keep": True}})
+    hass.states.async_set("sensor.grid", "1000", {"unit_of_measurement": "W"})
+    hass.states.async_set("sensor.battery", "500", {"unit_of_measurement": "W"})
+    await load(hass, entry)
+    before = deepcopy(dict(entry.data))
+    result = await hass.config_entries.options.async_init(entry.entry_id)
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"], {"pv_w": ["sensor.pv"], "grid_w": "sensor.grid", "battery_w": "sensor.battery", "pv_strings": []})
+    selected = result["data_schema"]({"enabled": False, "consent": True})
+    assert selected["grid_sign"] == "negative" and selected["battery_sign"] == "positive"
+    result = await hass.config_entries.options.async_configure(result["flow_id"], selected)
+    await hass.async_block_till_done()
+    assert result["type"] is FlowResultType.CREATE_ENTRY
+    assert dict(entry.data) == before
+    assert entry.options["signs"] == {"grid_w": -1, "battery_w": 1}
+    assert entry.options["mapping"] == mapping
+    assert entry.options["enabled"] is False
+    assert entry.options["future_option"] == {"keep": True}

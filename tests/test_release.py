@@ -14,6 +14,11 @@ spec.loader.exec_module(r)
 
 
 class ReleaseTools(unittest.TestCase):
+    def test_translation_key_validation_catches_negative_number(self):
+        r.validate_translation_keys({"selector": {"grid_w": {"options": {"positive": "Import", "negative": "Export"}}}})
+        with self.assertRaises(ValueError):
+            r.validate_translation_keys({"selector": {"grid_w": {"options": {"-1": "Export"}}}})
+
     def test_metadata_and_translations_validate(self):
         manifest = json.loads((ROOT / "custom_components/nase_energie/manifest.json").read_text(encoding="utf-8"))
         self.assertEqual(r.check()[0], manifest["version"])

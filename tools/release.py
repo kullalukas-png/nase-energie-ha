@@ -39,6 +39,16 @@ def leaf_keys(value, prefix=""):
     return {prefix}
 
 
+def validate_translation_keys(value):
+    """Mirror hassfest's key shape so selector labels fail locally, not after upload."""
+    if not isinstance(value, dict):
+        return
+    for key, child in value.items():
+        if not re.fullmatch(r"[a-z0-9](?:[a-z0-9_-]*[a-z0-9])?", key):
+            raise ValueError("Invalid translation key: " + key)
+        validate_translation_keys(child)
+
+
 def release_notes(changelog, version):
     match = re.search(r"^## " + re.escape(version) + r"(?:\s|$).*?\n(.*?)(?=^## |\Z)",
                       changelog, re.MULTILINE | re.DOTALL)
@@ -79,8 +89,10 @@ def check(root=ROOT, expected_version=None):
         if image[:8] != b"\x89PNG\r\n\x1a\n" or struct.unpack(">II", image[16:24]) != (size, size):
             raise ValueError("Local integration brand image missing or invalid")
     original = json.loads((component / "strings.json").read_text(encoding="utf-8"))
+    validate_translation_keys(original)
     for language in ("cs", "en"):
         translation = json.loads((component / "translations" / (language + ".json")).read_text(encoding="utf-8"))
+        validate_translation_keys(translation)
         if leaf_keys(original) != leaf_keys(translation):
             raise ValueError("Translation keys differ: " + language)
     for file in public_files(root):

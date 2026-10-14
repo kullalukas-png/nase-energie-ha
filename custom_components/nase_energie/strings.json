@@ -1,8 +1,8 @@
 {
   "title": "Naše energie",
   "selector": {
-    "grid_w": {"options": {"1": "Positive power means grid import", "-1": "Positive power means grid export"}},
-    "battery_w": {"options": {"1": "Positive power means battery charging", "-1": "Positive power means battery discharging"}}
+    "grid_w": {"options": {"positive": "Positive power means grid import", "negative": "Positive power means grid export"}},
+    "battery_w": {"options": {"positive": "Positive power means battery charging", "negative": "Positive power means battery discharging"}}
   },
   "entity": {
     "sensor": {

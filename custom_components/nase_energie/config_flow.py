@@ -45,14 +45,25 @@ def mapping_from(input_data):
             for metric in METRICS}
 
 
+def sign_value(choice):
+    """UI labels use valid translation keys; stored signs remain integers."""
+    if choice in ("positive", "1"):
+        return 1
+    if choice in ("negative", "-1"):
+        return -1
+    if type(choice) is int and choice in (-1, 1):
+        return choice
+    raise ValueError("invalid_sign")
+
+
 def confirmation_schema(signs, enabled=True):
     def sign_options(metric):
         return selector.SelectSelector(selector.SelectSelectorConfig(
-            options=["1", "-1"], translation_key=metric,
+            options=["positive", "negative"], translation_key=metric,
             mode=selector.SelectSelectorMode.DROPDOWN))
     return vol.Schema({
-        vol.Required("grid_sign", default=str(signs.get("grid_w", 1))): sign_options("grid_w"),
-        vol.Required("battery_sign", default=str(signs.get("battery_w", 1))): sign_options("battery_w"),
+        vol.Required("grid_sign", default="negative" if signs.get("grid_w", 1) == -1 else "positive"): sign_options("grid_w"),
+        vol.Required("battery_sign", default="negative" if signs.get("battery_w", 1) == -1 else "positive"): sign_options("battery_w"),
         vol.Required("enabled", default=enabled): bool,
         vol.Required("consent", default=False): bool,
     })
@@ -144,7 +155,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_step_confirm(self, user_input=None):
         errors = {}
         if user_input is not None:
-            self._signs = {"grid_w": int(user_input["grid_sign"]), "battery_w": int(user_input["battery_sign"])}
+            self._signs = {"grid_w": sign_value(user_input["grid_sign"]), "battery_w": sign_value(user_input["battery_sign"])}
             if not user_input.get("consent"):
                 errors["base"] = "consent_required"
             else:
@@ -211,7 +222,7 @@ class OptionsFlow(config_entries.OptionsFlow):
                 return self.async_create_entry(title="", data={**self.config_entry.options,
                     "mapping": self._mapping,
                     "pv_strings": self._strings,
-                    "signs": {"grid_w": int(user_input["grid_sign"]), "battery_w": int(user_input["battery_sign"])},
+                    "signs": {"grid_w": sign_value(user_input["grid_sign"]), "battery_w": sign_value(user_input["battery_sign"])},
                     "enabled": user_input["enabled"]})
         return self.async_show_form(step_id="confirm", data_schema=confirmation_schema(signs, settings.get("enabled", True)), errors=errors)
 

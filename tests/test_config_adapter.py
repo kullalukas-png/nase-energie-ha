@@ -59,6 +59,15 @@ flow = importlib.import_module("ne_adapter.config_flow")
 
 
 class ConfigTransitions(unittest.IsolatedAsyncioTestCase):
+    def test_named_signs_store_same_integers_as_legacy(self):
+        for value in ("positive", "1", 1):
+            self.assertEqual(flow.sign_value(value), 1)
+        for value in ("negative", "-1", -1):
+            self.assertEqual(flow.sign_value(value), -1)
+        for value in (True, False, 0, "invalid", None):
+            with self.assertRaises(ValueError):
+                flow.sign_value(value)
+
     def make_flow(self):
         instance = flow.ConfigFlow()
         states = [SimpleNamespace(entity_id="sensor.pv", state="1", attributes={"unit_of_measurement": "kW"})]

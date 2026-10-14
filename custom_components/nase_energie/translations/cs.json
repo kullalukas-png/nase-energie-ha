@@ -1,8 +1,8 @@
 {
   "title": "Naše energie",
   "selector": {
-    "grid_w": {"options": {"1": "Kladný výkon znamená odběr ze sítě", "-1": "Kladný výkon znamená dodávku do sítě"}},
-    "battery_w": {"options": {"1": "Kladný výkon znamená nabíjení baterie", "-1": "Kladný výkon znamená vybíjení baterie"}}
+    "grid_w": {"options": {"positive": "Kladný výkon znamená odběr ze sítě", "negative": "Kladný výkon znamená dodávku do sítě"}},
+    "battery_w": {"options": {"positive": "Kladný výkon znamená nabíjení baterie", "negative": "Kladný výkon znamená vybíjení baterie"}}
   },
   "entity": {
     "sensor": {
