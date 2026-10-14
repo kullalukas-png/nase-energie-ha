@@ -1,0 +1,118 @@
+{
+  "title": "Naše energie",
+  "selector": {
+    "grid_w": {"options": {"1": "Positive power means grid import", "-1": "Positive power means grid export"}},
+    "battery_w": {"options": {"1": "Positive power means battery charging", "-1": "Positive power means battery discharging"}}
+  },
+  "entity": {
+    "sensor": {
+      "connection": {
+        "state": {
+          "waiting": "Waiting for readings", "online": "Connected", "offline": "Temporarily unavailable",
+          "invalid_auth": "Reconnect required", "paused": "Sending paused", "no_data": "No available readings",
+          "pv_strings_not_ready": "Portal string storage not ready"
+        }
+      }
+    }
+  },
+  "config": {
+    "step": {
+      "reauth_confirm": {
+        "title": "Reconnect {name}",
+        "description": "Create a fresh one-use code for this same installation at {portal_url}. Only the access key will change. Your sensor choices, polarity, strings and sending preference will stay unchanged. If sending is paused, reconnecting will not enable it.",
+        "data": {
+          "pairing_code": "New one-use pairing code",
+          "consent": "I confirm reconnecting this installation to the same portal"
+        }
+      },
+      "user": {
+        "title": "Pair your installation",
+        "description": "Create a 10-minute, one-use pairing code in the portal. Never enter your Home Assistant access token.",
+        "data": {
+          "portal_url": "Portal URL (HTTPS)",
+          "pairing_code": "One-use pairing code"
+        }
+      },
+      "measurements": {
+        "title": "Confirm sensors",
+        "description": "GoodWe PV sources are suggested from the registry. Select either a combined PV total OR individual inverter PV sources, never both. AC output may include battery power. Household consumption and grid must be selected once, not summed across inverters. Units W/kW are converted automatically.",
+        "data": {
+          "pv_w": "PV generation (sum selected sources)",
+          "load_w": "Total household consumption (one source)",
+          "grid_w": "Grid power (one source)",
+          "battery_w": "Battery power",
+          "soc_pct": "Battery state of charge",
+          "pv_strings": "Individual PV strings — separate breakdown, not added to total"
+        }
+      },
+      "confirm": {
+        "title": "Confirm polarity and consent",
+        "description": "Check grid and battery polarity. GoodWe normally uses positive export and discharge. This integration only sends selected readings and never controls devices. Pause sending in integration options.",
+        "data": {
+          "grid_sign": "Positive grid power means",
+          "battery_sign": "Positive battery power means",
+          "enabled": "Sending enabled",
+          "consent": "I consent to sending selected readings to this portal"
+        }
+      }
+    },
+    "error": {
+      "wrong_installation": "This code belongs to a different installation. Existing settings were not changed. Revoke the unused key for that installation in the portal and create a code for the correct one.",
+      "invalid_url": "Enter an HTTPS URL without credentials, query or fragment.",
+      "invalid_pairing": "Invalid, expired or used code. Create a new pairing code.",
+      "cannot_connect": "Cannot reach portal. If pairing was already consumed, revoke the unused key and create a new code.",
+      "rate_limited": "Too many attempts. Try again later.",
+      "invalid_response": "Unexpected response. Portal version 1.3.0 is required.",
+      "consent_required": "Confirm consent to send these readings.",
+      "invalid_mapping": "Select valid sensors.",
+      "missing_sensor": "Sensor is not present in HA.",
+      "invalid_unit": "Power units must be W or kW; battery SOC must use %. Do not select kWh counters.",
+      "no_sensors": "Select at least one sensor.",
+      "duplicate_sensor": "Do not select the same sensor more than once."
+    },
+    "abort": {
+      "reauth_successful": "Access key updated. All existing sensor choices and settings have been preserved.",
+      "unique_id_mismatch": "The existing installation does not match. Its configuration was not changed.",
+      "already_configured": "Already configured. Revoke the newly created unused portal key; use Options to edit the existing integration."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Confirm sensors",
+        "description": "GoodWe PV sources are suggested from the registry. Select either a combined PV total OR individual inverter PV sources, never both. AC output may include battery power. Household consumption and grid must be selected once, not summed across inverters. Units W/kW are converted automatically.",
+        "data": {
+          "pv_w": "PV generation (sum selected sources)",
+          "load_w": "Total household consumption (one source)",
+          "grid_w": "Grid power (one source)",
+          "battery_w": "Battery power",
+          "soc_pct": "Battery state of charge",
+          "pv_strings": "Individual PV strings — separate breakdown, not added to total"
+        }
+      },
+      "confirm": {
+        "title": "Confirm polarity and consent",
+        "description": "Check grid and battery polarity. GoodWe normally uses positive export and discharge. This integration only sends selected readings and never controls devices. Pause sending in integration options.",
+        "data": {
+          "grid_sign": "Positive grid power means",
+          "battery_sign": "Positive battery power means",
+          "enabled": "Sending enabled",
+          "consent": "I consent to sending selected readings to this portal"
+        }
+      }
+    },
+    "error": {
+      "invalid_url": "Enter an HTTPS URL without credentials, query or fragment.",
+      "invalid_pairing": "Invalid, expired or used code. Create a new pairing code.",
+      "cannot_connect": "Cannot reach portal. If pairing was already consumed, revoke the unused key and create a new code.",
+      "rate_limited": "Too many attempts. Try again later.",
+      "invalid_response": "Unexpected response. Portal version 1.3.0 is required.",
+      "consent_required": "Confirm consent to send these readings.",
+      "invalid_mapping": "Select valid sensors.",
+      "missing_sensor": "Sensor is not present in HA.",
+      "invalid_unit": "Power units must be W or kW; battery SOC must use %. Do not select kWh counters.",
+      "no_sensors": "Select at least one sensor.",
+      "duplicate_sensor": "Do not select the same sensor more than once."
+    }
+  }
+}

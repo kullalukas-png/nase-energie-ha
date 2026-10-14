@@ -1,0 +1,8 @@
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests_ha"]
+addopts = "--timeout=30 --disable-socket --allow-unix-socket"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120

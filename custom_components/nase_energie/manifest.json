@@ -1,0 +1,12 @@
+{
+  "domain": "nase_energie",
+  "name": "Naše energie",
+  "codeowners": ["@kullalukas-png"],
+  "config_flow": true,
+  "documentation": "https://github.com/kullalukas-png/nase-energie-ha/blob/main/README.md",
+  "integration_type": "service",
+  "iot_class": "cloud_push",
+  "issue_tracker": "https://github.com/kullalukas-png/nase-energie-ha/issues",
+  "requirements": [],
+  "version": "0.3.0"
+}

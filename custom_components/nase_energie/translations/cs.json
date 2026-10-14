@@ -1,0 +1,118 @@
+{
+  "title": "Naše energie",
+  "selector": {
+    "grid_w": {"options": {"1": "Kladný výkon znamená odběr ze sítě", "-1": "Kladný výkon znamená dodávku do sítě"}},
+    "battery_w": {"options": {"1": "Kladný výkon znamená nabíjení baterie", "-1": "Kladný výkon znamená vybíjení baterie"}}
+  },
+  "entity": {
+    "sensor": {
+      "connection": {
+        "state": {
+          "waiting": "Čeká na měření", "online": "Připojeno", "offline": "Dočasně nedostupné",
+          "invalid_auth": "Obnovte připojení", "paused": "Odesílání pozastaveno", "no_data": "Žádná dostupná měření",
+          "pv_strings_not_ready": "Portál nemá připravené ukládání stringů"
+        }
+      }
+    }
+  },
+  "config": {
+    "step": {
+      "reauth_confirm": {
+        "title": "Obnovte připojení: {name}",
+        "description": "V portálu {portal_url} vytvořte nový jednorázový kód pro tuto stejnou elektrárnu. Změní se pouze přístupový klíč. Vybraná měřidla, znaménka, stringy i pozastavení odesílání zůstanou zachované. Obnovení klíče samo nezapne pozastavené odesílání.",
+        "data": {
+          "pairing_code": "Nový jednorázový párovací kód",
+          "consent": "Potvrzuji obnovení připojení této elektrárny do stejného portálu"
+        }
+      },
+      "user": {
+        "title": "Spárujte svoji elektrárnu",
+        "description": "V portálu Připojení a nastavení → Připojit Home Assistant → Párovat integraci vytvořte jednorázový kód (platí 10 minut). Hlavní přístupový token z HA sem nepatří.",
+        "data": {
+          "portal_url": "Adresa portálu (HTTPS)",
+          "pairing_code": "Jednorázový párovací kód"
+        }
+      },
+      "measurements": {
+        "title": "Potvrďte nalezená měření",
+        "description": "Senzory vybíráte podle názvu, ID nemusíte opisovat. GoodWe navrhneme automaticky. U více střídačů potvrďte společné měření domu a sítě; nesčítejte jejich kopie. Do výroby vyberte buď celkový PV senzor, NEBO PV senzor každého střídače, nikdy obojí. AC výstup může zahrnovat baterii. Jednotky W/kW převedeme automaticky.",
+        "data": {
+          "pv_w": "Výroba FVE — součet vybraných senzorů",
+          "load_w": "Celková spotřeba domu — pouze jeden údaj",
+          "grid_w": "Celkový výkon do/ze sítě — pouze jeden údaj",
+          "battery_w": "Výkon baterie",
+          "soc_pct": "Nabití baterie",
+          "pv_strings": "Jednotlivé PV stringy — samostatný rozpad, nesčítá se znovu"
+        }
+      },
+      "confirm": {
+        "title": "Znaménka a souhlas",
+        "description": "GoodWe obvykle používá kladný export a vybíjení baterie. Ověřte vybrané směry. Integrace posílá jen tato měření, nemůže ovládat zařízení. Odesílání lze pozastavit v možnostech integrace.",
+        "data": {
+          "grid_sign": "Co znamená kladný výkon sítě?",
+          "battery_sign": "Co znamená kladný výkon baterie?",
+          "enabled": "Odesílání zapnuto",
+          "consent": "Souhlasím s odesíláním vybraných měření do portálu"
+        }
+      }
+    },
+    "error": {
+      "wrong_installation": "Kód patří jiné elektrárně. Stávající nastavení se nezměnilo. V portálu zrušte nepoužitý klíč této jiné elektrárny a vytvořte kód pro správnou elektrárnu.",
+      "invalid_url": "Zadejte HTTPS adresu portálu bez hesla, parametrů a fragmentu.",
+      "invalid_pairing": "Kód vypršel, byl použit nebo není platný. Vytvořte nový v portálu.",
+      "cannot_connect": "Portál není dostupný. Ověřte adresu a připojení. Pokud již kód převzal, vytvořte nový a zrušte nepoužitý klíč.",
+      "rate_limited": "Příliš mnoho pokusů. Zkuste to později.",
+      "invalid_response": "Portál vrátil neočekávanou odpověď. Ověřte aktualizaci portálu na 1.3.0.",
+      "consent_required": "Potvrďte odesílání vybraných měření.",
+      "invalid_mapping": "Zvolte platné měřicí senzory.",
+      "missing_sensor": "Senzor není dostupný v HA. Zvolte jiný.",
+      "invalid_unit": "Výkon musí mít W nebo kW, stav baterie %. Energetické čítače kWh sem nepatří.",
+      "no_sensors": "Vyberte alespoň jedno měření.",
+      "duplicate_sensor": "Jeden senzor nelze započítat vícekrát."
+    },
+    "abort": {
+      "reauth_successful": "Klíč byl obnoven. Vybraná měřidla i nastavení zůstala zachovaná.",
+      "unique_id_mismatch": "Původní elektrárna neodpovídá. Její nastavení se nezměnilo.",
+      "already_configured": "Tato elektrárna je již připojená. Zrušte nově vytvořený nepoužitý klíč v portálu; stávající integraci upravíte přes Možnosti."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Potvrďte nalezená měření",
+        "description": "Senzory vybíráte podle názvu, ID nemusíte opisovat. GoodWe navrhneme automaticky. U více střídačů potvrďte společné měření domu a sítě; nesčítejte jejich kopie. Do výroby vyberte buď celkový PV senzor, NEBO PV senzor každého střídače, nikdy obojí. AC výstup může zahrnovat baterii. Jednotky W/kW převedeme automaticky.",
+        "data": {
+          "pv_w": "Výroba FVE — součet vybraných senzorů",
+          "load_w": "Celková spotřeba domu — pouze jeden údaj",
+          "grid_w": "Celkový výkon do/ze sítě — pouze jeden údaj",
+          "battery_w": "Výkon baterie",
+          "soc_pct": "Nabití baterie",
+          "pv_strings": "Jednotlivé PV stringy — samostatný rozpad, nesčítá se znovu"
+        }
+      },
+      "confirm": {
+        "title": "Znaménka a souhlas",
+        "description": "GoodWe obvykle používá kladný export a vybíjení baterie. Ověřte vybrané směry. Integrace posílá jen tato měření, nemůže ovládat zařízení. Odesílání lze pozastavit v možnostech integrace.",
+        "data": {
+          "grid_sign": "Co znamená kladný výkon sítě?",
+          "battery_sign": "Co znamená kladný výkon baterie?",
+          "enabled": "Odesílání zapnuto",
+          "consent": "Souhlasím s odesíláním vybraných měření do portálu"
+        }
+      }
+    },
+    "error": {
+      "invalid_url": "Zadejte HTTPS adresu portálu bez hesla, parametrů a fragmentu.",
+      "invalid_pairing": "Kód vypršel, byl použit nebo není platný. Vytvořte nový v portálu.",
+      "cannot_connect": "Portál není dostupný. Ověřte adresu a připojení. Pokud již kód převzal, vytvořte nový a zrušte nepoužitý klíč.",
+      "rate_limited": "Příliš mnoho pokusů. Zkuste to později.",
+      "invalid_response": "Portál vrátil neočekávanou odpověď. Ověřte aktualizaci portálu na 1.3.0.",
+      "consent_required": "Potvrďte odesílání vybraných měření.",
+      "invalid_mapping": "Zvolte platné měřicí senzory.",
+      "missing_sensor": "Senzor není dostupný v HA. Zvolte jiný.",
+      "invalid_unit": "Výkon musí mít W nebo kW, stav baterie %. Energetické čítače kWh sem nepatří.",
+      "no_sensors": "Vyberte alespoň jedno měření.",
+      "duplicate_sensor": "Jeden senzor nelze započítat vícekrát."
+    }
+  }
+}

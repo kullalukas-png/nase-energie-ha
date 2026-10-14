@@ -1,0 +1,80 @@
+name: Publish tested release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version already committed in manifest and changelog, e.g. 0.3.0"
+        required: true
+        type: string
+      prerelease:
+        description: "Beta / pre-release (keep enabled until live HA + portal checks pass)"
+        type: boolean
+        default: true
+      live_verified:
+        description: "I completed docs/TESTING.md on live HA (required for stable releases)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-nase-energie
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/validate.yml
+
+  publish:
+    needs: validate
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    env:
+      RELEASE_VERSION: ${{ inputs.version }}
+      IS_PRERELEASE: ${{ inputs.prerelease }}
+      LIVE_VERIFIED: ${{ inputs.live_verified }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+      - name: Match versions and refuse unverified stable publication
+        run: |
+          python tools/release.py check --version "$RELEASE_VERSION"
+          if [ "$GITHUB_REPOSITORY" != "kullalukas-png/nase-energie-ha" ]; then
+            echo "Publication workflow is configured for a different repository."
+            exit 1
+          fi
+          if [ "$IS_PRERELEASE" != "true" ] && [ "$LIVE_VERIFIED" != "true" ]; then
+            echo "Complete the live verification checklist before a stable release."
+            exit 1
+          fi
+      - name: Build safe, versioned package
+        run: python tools/release.py build --output dist
+      - name: Publish a new release, never overwrite an existing one
+        run: |
+          tag="v$RELEASE_VERSION"
+          if gh release view "$tag" > /dev/null 2>&1; then
+            echo "Release already exists; publish a new version instead."
+            exit 1
+          fi
+          if git rev-parse "$tag^{commit}" >/dev/null 2>&1; then
+            if [ "$(git rev-parse "$tag^{commit}")" != "$GITHUB_SHA" ]; then
+              echo "Existing tag points to another commit."
+              exit 1
+            fi
+          fi
+          flags=()
+          if [ "$IS_PRERELEASE" = "true" ]; then flags+=(--prerelease); fi
+          gh release create "$tag" "dist/nase-energie-$RELEASE_VERSION.zip" "dist/SHA256SUMS.txt" \
+            --target "$GITHUB_SHA" --title "Naše energie $RELEASE_VERSION" \
+            --notes-file dist/RELEASE-NOTES.md "${flags[@]}"

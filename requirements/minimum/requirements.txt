@@ -1,0 +1,2 @@
+# Extracted HA fixtures matched to the minimum supported stable Core release.
+pytest-homeassistant-custom-component==0.13.363

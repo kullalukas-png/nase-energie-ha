@@ -1,0 +1,41 @@
+name: Chyba / Bug report
+description: Problém s instalací, aktualizací nebo přenosem měření
+body:
+  - type: markdown
+    attributes:
+      value: "Nepřikládejte klíče, párovací kódy, konfiguraci HA, .storage ani zálohy."
+  - type: input
+    id: integration
+    attributes:
+      label: Verze integrace
+    validations:
+      required: true
+  - type: input
+    id: ha
+    attributes:
+      label: Verze Home Assistantu a způsob instalace (OS / Container)
+    validations:
+      required: true
+  - type: input
+    id: portal
+    attributes:
+      label: Verze portálu (bez soukromých adres a názvů)
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Co se stalo a jak to zopakovat
+      description: "Uveďte očekávaný výsledek. Použijte smyšlené názvy elektráren/měřidel."
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Bezpečná diagnostika integrace
+      description: "Jen diagnostika Naše energie, nikoli celý systémový export. Nejprve zkontrolujte citlivé údaje."
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Soukromí
+      options:
+        - label: "Nepřikládám přístupový klíč, párovací kód ani konfiguraci/zálohu HA."
+          required: true
