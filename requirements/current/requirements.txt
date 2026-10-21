@@ -1,2 +1,2 @@
 # Extracted HA fixtures matched to Core 2026.10.1, verified 2026-10-13.
-pytest-homeassistant-custom-component==0.13.372
+pytest-homeassistant-custom-component==0.13.373
